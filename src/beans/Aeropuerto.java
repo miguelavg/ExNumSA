@@ -9,15 +9,17 @@ package beans;
  * @author miguelavg
  */
 public class Aeropuerto {
-    public String nombre;
-    public double x;
-    public double y;
-    public double costoAlmacen;
-    public int capacMax;
-    public int capacActual;
-    public boolean principal;
+    private int idAeropuerto;
+    private String nombre;
+    private double x;
+    private double y;
+    private double costoAlmacen;
+    private int capacMax;
+    private int capacActual;
+    private boolean principal;
 
-    public Aeropuerto(String nombre, double x, double y, double costoAlmacen, int capacMax, int capacActual, boolean principal) {
+    public Aeropuerto(int idAeropuerto, String nombre, double x, double y, double costoAlmacen, int capacMax, int capacActual, boolean principal) {
+        this.idAeropuerto = idAeropuerto;
         this.nombre = nombre;
         this.x = x;
         this.y = y;

@@ -15,14 +15,16 @@ public class Parametro {
     private int beta;
     private String xmlAeropuertos;
     private String xmlVuelos;
+    private String xmlEnvio;
 
-    public Parametro(double tInicial, double tFinal, double alfa, int beta, String xmlAeropuertos, String xmlVuelos) {
+    public Parametro(double tInicial, double tFinal, double alfa, int beta, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
         this.tInicial = tInicial;
         this.tFinal = tFinal;
         this.alfa = alfa;
         this.beta = beta;
         this.xmlAeropuertos = xmlAeropuertos;
         this.xmlVuelos = xmlVuelos;
+        this.xmlEnvio = xmlEnvio;
     }
 
     public double gettInicial() {
@@ -49,5 +51,7 @@ public class Parametro {
         return xmlVuelos;
     }
     
-    
+    public String getXmlEnvio() {
+        return xmlEnvio;
+    }
 }
