@@ -28,4 +28,36 @@ public class Aeropuerto {
         this.capacActual = capacActual;
         this.principal = principal;
     }
+
+    public int getIdAeropuerto() {
+        return idAeropuerto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getCostoAlmacen() {
+        return costoAlmacen;
+    }
+
+    public int getCapacMax() {
+        return capacMax;
+    }
+
+    public int getCapacActual() {
+        return capacActual;
+    }
+
+    public boolean isPrincipal() {
+        return principal;
+    }
 }
