@@ -3,6 +3,7 @@
     <nombre>Vega</nombre>
     <x>0.0</x>
     <y>0.0</y>
+    <costoAlmacen>100.0</costoAlmacen>
     <capacMax>500</capacMax>
     <capacActual>0</capacActual>
     <principal>true</principal>
@@ -11,6 +12,7 @@
     <nombre>Solórzano</nombre>
     <x>100.0</x>
     <y>100.0</y>
+    <costoAlmacen>100.0</costoAlmacen>
     <capacMax>1000</capacMax>
     <capacActual>0</capacActual>
     <principal>true</principal>
@@ -19,6 +21,7 @@
     <nombre>Juárez</nombre>
     <x>0.0</x>
     <y>100.0</y>
+    <costoAlmacen>100.0</costoAlmacen>
     <capacMax>400</capacMax>
     <capacActual>0</capacActual>
     <principal>false</principal>
@@ -27,6 +30,7 @@
     <nombre>Chávez</nombre>
     <x>100.0</x>
     <y>0.0</y>
+    <costoAlmacen>100.0</costoAlmacen>
     <capacMax>600</capacMax>
     <capacActual>0</capacActual>
     <principal>false</principal>

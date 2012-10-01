@@ -1,0 +1,10 @@
+<list>
+  <beans.Parametro>
+    <tInicial>100.0</tInicial>
+    <tFinal>0.0</tFinal>
+    <alfa>0.99</alfa>
+    <beta>500</beta>
+    <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
+    <xmlVuelos>vuelos.xml</xmlVuelos>
+  </beans.Parametro>
+</list>
