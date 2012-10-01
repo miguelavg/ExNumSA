@@ -1,0 +1,34 @@
+<list>
+  <beans.Aeropuerto>
+    <nombre>Vega</nombre>
+    <x>0.0</x>
+    <y>0.0</y>
+    <capacMax>500</capacMax>
+    <capacActual>0</capacActual>
+    <principal>true</principal>
+  </beans.Aeropuerto>
+  <beans.Aeropuerto>
+    <nombre>Solórzano</nombre>
+    <x>100.0</x>
+    <y>100.0</y>
+    <capacMax>1000</capacMax>
+    <capacActual>0</capacActual>
+    <principal>true</principal>
+  </beans.Aeropuerto>
+  <beans.Aeropuerto>
+    <nombre>Juárez</nombre>
+    <x>0.0</x>
+    <y>100.0</y>
+    <capacMax>400</capacMax>
+    <capacActual>0</capacActual>
+    <principal>false</principal>
+  </beans.Aeropuerto>
+  <beans.Aeropuerto>
+    <nombre>Chávez</nombre>
+    <x>100.0</x>
+    <y>0.0</y>
+    <capacMax>600</capacMax>
+    <capacActual>0</capacActual>
+    <principal>false</principal>
+  </beans.Aeropuerto>
+</list>
