@@ -17,7 +17,8 @@ public class Recocido {
 
     private double tInicial;
     private double tFinal;
-    private double alfa;
+    private double alfaSA;
+    private double alfaGrasp;
     private int beta;
     private ArrayList<Aeropuerto> aeropuertos;
     private ArrayList<Vuelo> vuelos;
@@ -29,7 +30,8 @@ public class Recocido {
         Parametro parametro = (Parametro) Serializer.deserializar(archParametros).get(0);
         this.tInicial = parametro.gettInicial();
         this.tFinal = parametro.gettFinal();
-        this.alfa = parametro.getAlfa();
+        this.alfaSA = parametro.getAlfaSA();
+        this.alfaGrasp = parametro.getAlfaGrasp();
         this.beta = parametro.getBeta();
         this.aeropuertos = Serializer.deserializar(parametro.getXmlAeropuertos());
         this.vuelos = Serializer.deserializar(parametro.getXmlVuelos());
@@ -87,9 +89,9 @@ public class Recocido {
 
         double dEnergia;
         double b, p;
-        int iteraciones = (int) (Math.log(this.tFinal / this.tInicial) / Math.log(this.alfa));
+        int iteraciones = (int) (Math.log(this.tFinal / this.tInicial) / Math.log(this.alfaSA));
 
-        for (double temperatura = this.tInicial; temperatura > this.tFinal; temperatura = this.alfa * temperatura) {
+        for (double temperatura = this.tInicial; temperatura > this.tFinal; temperatura = this.alfaSA * temperatura) {
             for (int k = 0; k < this.beta; k++) {
 
                 this.alterado = alteracionMolecular(this.solucion);

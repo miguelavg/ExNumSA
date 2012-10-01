@@ -11,16 +11,18 @@ package beans;
 public class Parametro {
     private double tInicial;
     private double tFinal;
-    private double alfa;
+    private double alfaSA;
+    private double alfaGrasp;
     private int beta;
     private String xmlAeropuertos;
     private String xmlVuelos;
     private String xmlEnvio;
 
-    public Parametro(double tInicial, double tFinal, double alfa, int beta, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
+    public Parametro(double tInicial, double tFinal, double alfaSA, double alfaGrasp, int beta, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
         this.tInicial = tInicial;
         this.tFinal = tFinal;
-        this.alfa = alfa;
+        this.alfaSA = alfaSA;
+        this.alfaGrasp = alfaGrasp;
         this.beta = beta;
         this.xmlAeropuertos = xmlAeropuertos;
         this.xmlVuelos = xmlVuelos;
@@ -35,10 +37,14 @@ public class Parametro {
         return tFinal;
     }
 
-    public double getAlfa() {
-        return alfa;
+    public double getAlfaSA() {
+        return alfaSA;
     }
 
+    public double getAlfaGrasp() {
+        return alfaGrasp;
+    }
+    
     public int getBeta() {
         return beta;
     }

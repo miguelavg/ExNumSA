@@ -2,7 +2,8 @@
   <beans.Parametro>
     <tInicial>100.0</tInicial>
     <tFinal>0.0</tFinal>
-    <alfa>0.99</alfa>
+    <alfaSA>0.99</alfaSA>
+    <alfaGrasp>0.40</alfaGrasp>
     <beta>500</beta>
     <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
     <xmlVuelos>vuelos.xml</xmlVuelos>
