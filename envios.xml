@@ -1,7 +1,7 @@
 <list>
   <beans.Envio>
-    <idOrigen>1</idOrigen>
-    <idDestino>2</idDestino>
-    <fecha>2012-10-01 20:38:38.974 UTC</fecha>
+    <idOrigen>0</idOrigen>
+    <idDestino>3</idDestino>
+    <fecha>2012-10-01 00:38:38.974 UTC</fecha>
   </beans.Envio>
 </list>

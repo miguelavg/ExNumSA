@@ -75,7 +75,7 @@ public class Recocido {
         return this.temperatura;
     }
 
-    private double estadoEnergia(ArrayList<Vuelo> vuelos, Date llegada) {
+    private int estadoEnergia(ArrayList<Vuelo> vuelos, Date llegada) {
         Vuelo vuelo;
         long milisec;
         double iCostoAlmacen;
@@ -103,7 +103,7 @@ public class Recocido {
         }
 
         costo = costoEnvio + costoAlmacen;
-        return costo;
+        return (int) costo;
     }
 
     private double boltzmann(double dEnergia, double temperatura) {
@@ -123,9 +123,9 @@ public class Recocido {
         ArrayList<Vuelo> rcl;
         Vuelo aleatorio;
 
-        double beta = Double.MAX_VALUE;
-        double tau = 0;
-        double e;
+        int beta = Integer.MAX_VALUE;
+        int tau = 0;
+        int e;
 
         // Mientras no hayamos llegado al final...
 
@@ -179,7 +179,7 @@ public class Recocido {
             aActual = aleatorio.getDestino();
             iActual = aActual.getIdAeropuerto();
             dActual = aleatorio.getfLlegada();
-            beta = Double.MAX_VALUE;
+            beta = Integer.MAX_VALUE;
             tau = 0;
 
         }
@@ -226,8 +226,9 @@ public class Recocido {
 
     public Resultado simular() {
         Random rnd = new Random();
+        Resultado resultado;
         long tiempoInicio, tiempoFin;
-        double dEnergia;
+        int dEnergia;
         double b, p;
 
         int iteraciones = this.kSA * (int) (Math.log(this.temperaturaFinal / this.temperaturaInicial) / Math.log(this.alfaSA));
@@ -245,7 +246,12 @@ public class Recocido {
         if (this.solucion == null) {
             return null;
         }
-
+        
+        System.out.println("Solución inicial: ");
+        tiempoFin = new Date().getTime();
+        resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        resultado.imprimirResultados();
+        
         while (this.temperatura > this.temperaturaFinal) {
 
             for (int k = 0; k < this.kSA; k++) {
@@ -262,15 +268,17 @@ public class Recocido {
 
                     if (outIt >= iteraciones * this.pParada) {
                         tiempoFin = new Date().getTime();
-                        return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+                        System.out.println("¡Fin por optimalidad!");
+                        resultado =  new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+                        return resultado;
                     }
 
                     continue;
                 }
-
+                
                 dEnergia = estadoEnergia(this.alterado, this.envio.getFecha()) - estadoEnergia(this.solucion, this.envio.getFecha());
 
-                if (dEnergia > 0) {
+                if (dEnergia >= 0) {
 
                     outIt++;
                     b = boltzmann(dEnergia, temperatura);
@@ -278,15 +286,19 @@ public class Recocido {
 
                     if (p <= b) {
                         this.solucion = this.alterado;
+                        System.out.println("¡Alteración elegida por Boltzmann!");
                     }
                 } else {
                     outIt = 0;
                     this.solucion = this.alterado;
+                    System.out.println("¡Alteración elegida por mejora!");
                 }
 
                 if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
-                    return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+                    System.out.println("¡Fin por optimalidad!");
+                    resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+                    return resultado;
                 }
 
             }
@@ -295,6 +307,7 @@ public class Recocido {
         }
 
         tiempoFin = new Date().getTime();
-        return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        return resultado;
     }
 }

@@ -12,12 +12,12 @@ import java.util.ArrayList;
  */
 public class Resultado {
 
-    double tiempo;
-    double costo;
+    long tiempo;
+    int costo;
     Envio envio;
     ArrayList<Vuelo> solucion;
 
-    public Resultado(Envio envio, double tiempo, double costo, ArrayList<Vuelo> solucion) {
+    public Resultado(Envio envio, long tiempo, int costo, ArrayList<Vuelo> solucion) {
         this.envio = envio;
         this.tiempo = tiempo;
         this.costo = costo;
@@ -27,11 +27,11 @@ public class Resultado {
     public Envio getEnvio() {
         return envio;
     }
-    public double getTiempo() {
+    public long getTiempo() {
         return tiempo;
     }
 
-    public double getCosto() {
+    public int getCosto() {
         return costo;
     }
 
@@ -60,8 +60,8 @@ public class Resultado {
             System.out.println();
         }
         
-        System.out.println("Costo: " + this.costo + "u");
-        System.out.println("Tiempo de respuesta: " + (double) this.tiempo / 1000 + "ms");
+        System.out.println("Costo: " + (int) costo + "u");
+        System.out.println("Tiempo de respuesta: " + (double) this.tiempo / 1000 + "s");
         
     }
 }

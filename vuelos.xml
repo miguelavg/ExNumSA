@@ -1,9 +1,9 @@
 <list>
   <beans.Vuelo>
     <idVuelo>1</idVuelo>
-    <idOrigen>1</idOrigen>
-    <idDestino>2</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
+    <idOrigen>0</idOrigen>
+    <idDestino>1</idDestino>
+    <fSalida>2012-10-01 16:27:55.442 UTC</fSalida>
     <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
     <costoAlquiler>400.0</costoAlquiler>
     <capacEnvioMax>300</capacEnvioMax>
@@ -11,19 +11,19 @@
   </beans.Vuelo>
   <beans.Vuelo>
     <idVuelo>2</idVuelo>
-    <idOrigen>0</idOrigen>
+    <idOrigen>1</idOrigen>
     <idDestino>2</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
-    <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
+    <fSalida>2012-10-03 16:27:55.442 UTC</fSalida>
+    <fLlegada>2012-10-04 16:27:55.442 UTC</fLlegada>
     <costoAlquiler>400.0</costoAlquiler>
     <capacEnvioMax>300</capacEnvioMax>
     <capacEnviUsada>100</capacEnviUsada>
   </beans.Vuelo>
   <beans.Vuelo>
     <idVuelo>3</idVuelo>
-    <idOrigen>1</idOrigen>
-    <idDestino>3</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
+    <idOrigen>0</idOrigen>
+    <idDestino>2</idDestino>
+    <fSalida>2012-10-01 16:27:55.442 UTC</fSalida>
     <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
     <costoAlquiler>400.0</costoAlquiler>
     <capacEnvioMax>300</capacEnvioMax>
@@ -31,9 +31,9 @@
   </beans.Vuelo>
   <beans.Vuelo>
     <idVuelo>4</idVuelo>
-    <idOrigen>1</idOrigen>
-    <idDestino>0</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
+    <idOrigen>0</idOrigen>
+    <idDestino>3</idDestino>
+    <fSalida>2012-10-01 16:27:55.442 UTC</fSalida>
     <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
     <costoAlquiler>400.0</costoAlquiler>
     <capacEnvioMax>300</capacEnvioMax>
@@ -41,30 +41,10 @@
   </beans.Vuelo>
   <beans.Vuelo>
     <idVuelo>5</idVuelo>
-    <idOrigen>0</idOrigen>
-    <idDestino>1</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
-    <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
-    <costoAlquiler>400.0</costoAlquiler>
-    <capacEnvioMax>300</capacEnvioMax>
-    <capacEnviUsada>100</capacEnviUsada>
-  </beans.Vuelo>
-  <beans.Vuelo>
-    <idVuelo>6</idVuelo>
-    <idOrigen>3</idOrigen>
-    <idDestino>2</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
-    <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
-    <costoAlquiler>400.0</costoAlquiler>
-    <capacEnvioMax>300</capacEnvioMax>
-    <capacEnviUsada>100</capacEnviUsada>
-  </beans.Vuelo>
-  <beans.Vuelo>
-    <idVuelo>7</idVuelo>
-    <idOrigen>1</idOrigen>
-    <idDestino>2</idDestino>
-    <fSalida>2012-10-02 16:27:55.442 UTC</fSalida>
-    <fLlegada>2012-10-02 16:27:55.442 UTC</fLlegada>
+    <idOrigen>2</idOrigen>
+    <idDestino>3</idDestino>
+    <fSalida>2012-10-05 16:27:55.442 UTC</fSalida>
+    <fLlegada>2012-10-06 16:27:55.442 UTC</fLlegada>
     <costoAlquiler>400.0</costoAlquiler>
     <capacEnvioMax>300</capacEnvioMax>
     <capacEnviUsada>100</capacEnviUsada>
