@@ -4,6 +4,8 @@
  */
 package beans;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author miguelavg
@@ -17,6 +19,8 @@ public class Aeropuerto {
     private int capacMax;
     private int capacActual;
     private boolean principal;
+    private ArrayList<Vuelo> vuelosSalida;
+    private ArrayList<Vuelo> vuelosLlegada;
 
     public Aeropuerto(int idAeropuerto, String nombre, double x, double y, double costoAlmacen, int capacMax, int capacActual, boolean principal) {
         this.idAeropuerto = idAeropuerto;
@@ -27,6 +31,8 @@ public class Aeropuerto {
         this.capacMax = capacMax;
         this.capacActual = capacActual;
         this.principal = principal;
+        this.vuelosLlegada = new ArrayList<Vuelo>();
+        this.vuelosSalida = new ArrayList<Vuelo>();
     }
 
     public int getIdAeropuerto() {
@@ -59,5 +65,13 @@ public class Aeropuerto {
 
     public boolean isPrincipal() {
         return principal;
+    }
+
+    public ArrayList<Vuelo> getVuelosLlegada() {
+        return vuelosLlegada;
+    }
+    
+    public ArrayList<Vuelo> getVuelosSalida() {
+        return vuelosSalida;
     }
 }

@@ -13,20 +13,24 @@ import java.util.Date;
 public class Vuelo {
     private Aeropuerto origen;
     private Aeropuerto destino;
+    private int idOrigen;
+    private int idDestino;
     private Date fSalida;
     private Date fLlegada;
     private double costoAlquiler;
     private int capacEnvioMax;
     private int capacEnviUsada;
 
-    public Vuelo(Aeropuerto origen, Aeropuerto destino, Date fSalida, Date fLlegada, double costoAlquiler, int capacEnvioMax, int capacEnviUsada) {
-        this.origen = origen;
-        this.destino = destino;
+    public Vuelo(int idOrigen, int idDestino, Date fSalida, Date fLlegada, double costoAlquiler, int capacEnvioMax, int capacEnviUsada) {
+        this.idOrigen = idOrigen;
+        this.idDestino = idDestino;
         this.fSalida = fSalida;
         this.fLlegada = fLlegada;
         this.costoAlquiler = costoAlquiler;
         this.capacEnvioMax = capacEnvioMax;
         this.capacEnviUsada = capacEnviUsada;
+        
+        
     }
 
     public Aeropuerto getOrigen() {
@@ -37,6 +41,14 @@ public class Vuelo {
         return destino;
     }
 
+    public int getIdOrigen() {
+        return idOrigen;
+    }
+
+    public int getIdDestino() {
+        return idDestino;
+    }
+    
     public Date getfSalida() {
         return fSalida;
     }
@@ -56,4 +68,14 @@ public class Vuelo {
     public double getCostoAlquiler() {
         return costoAlquiler;
     }
+
+    public void setOrigen(Aeropuerto origen) {
+        this.origen = origen;
+    }
+
+    public void setDestino(Aeropuerto destino) {
+        this.destino = destino;
+    }
+    
+    
 }

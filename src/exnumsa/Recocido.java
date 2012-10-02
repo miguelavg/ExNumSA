@@ -35,7 +35,39 @@ public class Recocido {
         this.beta = parametro.getBeta();
         this.aeropuertos = Serializer.deserializar(parametro.getXmlAeropuertos());
         this.vuelos = Serializer.deserializar(parametro.getXmlVuelos());
+
+        for (int i = 0; i < this.vuelos.size(); i++) {
+            Vuelo vuelo = this.vuelos.get(i);
+
+            for (int j = 0; j < this.aeropuertos.size(); j++) {
+                Aeropuerto aeropuerto = this.aeropuertos.get(j);
+
+                if (aeropuerto.getIdAeropuerto() == vuelo.getIdOrigen()) {
+                    vuelo.setOrigen(aeropuerto);
+                    aeropuerto.getVuelosSalida().add(vuelo);
+                }
+
+                if (aeropuerto.getIdAeropuerto() == vuelo.getIdDestino()) {
+                    vuelo.setDestino(aeropuerto);
+                    aeropuerto.getVuelosLlegada().add(vuelo);
+                }
+
+            }
+        }
+
         this.envio = (Envio) Serializer.deserializar(parametro.getXmlEnvio()).get(0);
+        for (int i = 0; i < this.aeropuertos.size(); i++) {
+            Aeropuerto aeropuerto = this.aeropuertos.get(i);
+
+            if (aeropuerto.getIdAeropuerto() == envio.getIdOrigen()) {
+                envio.setOrigen(aeropuerto);
+            }
+
+            if (aeropuerto.getIdAeropuerto() == envio.getIdDestino()) {
+                envio.setDestino(aeropuerto);
+            }
+
+        }
     }
 
     private double estadoEnergia(ArrayList<Vuelo> vuelos) {
@@ -46,7 +78,7 @@ public class Recocido {
         double iCostoEnvio;
         double costoAlmacen = 0;
         double costoEnvio = 0;
-        double costo = 0;
+        double costo;
 
         double pLleno;
         double pCapacidad;
@@ -74,7 +106,67 @@ public class Recocido {
         return Math.exp(-1 * (dEnergia / temperatura));
     }
 
-    private ArrayList<Vuelo> liteGrasp(ArrayList<Vuelo> vuelos) {
+    private ArrayList<Vuelo> liteGrasp(ArrayList<Vuelo> vuelos, Aeropuerto origen, Aeropuerto destino) {
+        Aeropuerto aActual = origen;
+        Aeropuerto aDestino = destino;
+
+        Date dActual = envio.getFechaRegistro();
+        int iActual = envio.getOrigen().getIdAeropuerto();
+        int iFinal = envio.getDestino().getIdAeropuerto();
+
+        ArrayList<Vuelo> posibles;
+        ArrayList<Vuelo> rcl;
+        
+        double bet = Double.MAX_VALUE;
+        double tau = 0;
+        double e;
+
+        // Mientras no hayamos llegado al final...
+
+        while (iActual != iFinal && aActual.getCapacMax() > aActual.getCapacActual()) {
+            posibles = new ArrayList<Vuelo>();
+
+            for (int i = 0; i < aActual.getVuelosSalida().size(); i++) {
+                Vuelo vuelo = aActual.getVuelosSalida().get(i);
+
+                // si se es posible, calcular energía
+
+                if (vuelo.getfSalida().after(dActual)
+                        && vuelo.getCapacEnvioMax() > vuelo.getCapacEnviUsada()
+                        && aDestino.getCapacMax() > aDestino.getCapacActual() + vuelo.getCapacEnviUsada())
+                {
+                    posibles.add(vuelo);
+                    ArrayList<Vuelo> wrap = new ArrayList<Vuelo>();
+                    wrap.add(vuelo);
+                    e = estadoEnergia(wrap);
+
+                    if (e < bet) {
+                        bet = e;
+                    }
+                    if (e > tau) {
+                        tau = e;
+                    }
+
+                }
+
+            }
+            
+            rcl = new ArrayList<Vuelo>();
+            
+            for(int i = 0; i < posibles.size(); i++){
+                Vuelo vuelo = posibles.get(i);
+                ArrayList<Vuelo> wrap = new ArrayList<Vuelo>();
+                wrap.add(vuelo);
+                e = estadoEnergia(wrap);
+                
+                if(bet <= e && e <= bet + this.alfaGrasp*(tau - bet)){
+                    rcl.add(vuelo);
+                }
+            }
+            
+            
+        }
+
         return null;
     }
 
@@ -84,7 +176,7 @@ public class Recocido {
 
     public void simular() {
 
-        this.solucion = liteGrasp(this.vuelos);
+        this.solucion = liteGrasp(this.vuelos, envio.getOrigen(), envio.getDestino());
         Random rnd = new Random();
 
         double dEnergia;
@@ -104,7 +196,7 @@ public class Recocido {
 
                     if (p <= b) {
                         this.solucion = this.alterado;
-                    }      
+                    }
                 } else {
                     this.solucion = this.alterado;
                 }

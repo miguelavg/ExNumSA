@@ -13,8 +13,9 @@ import java.util.Date;
 public class Envio {
     private Aeropuerto origen;
     private Aeropuerto destino;
+    private int idOrigen;
+    private int idDestino;
     private Date fechaRegistro;
-    private Date fecha;
 
     public Envio(Aeropuerto origen, Aeropuerto destino, Date fechaRegistro) {
         this.origen = origen;
@@ -30,7 +31,23 @@ public class Envio {
         return destino;
     }
 
+    public int getIdOrigen() {
+        return idOrigen;
+    }
+
+    public int getIdDestino() {
+        return idDestino;
+    }
+
     public Date getFechaRegistro() {
         return fechaRegistro;
     }
+
+    public void setOrigen(Aeropuerto origen) {
+        this.origen = origen;
+    }
+
+    public void setDestino(Aeropuerto destino) {
+        this.destino = destino;
+    }  
 }
