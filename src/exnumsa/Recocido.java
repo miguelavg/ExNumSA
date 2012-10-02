@@ -165,7 +165,7 @@ public class Recocido {
             aleatorio = rcl.get(rnd.nextInt(rcl.size()));
             construccion.add(aleatorio);
 
-            aActual = aleatorio.getOrigen();
+            aActual = aleatorio.getDestino();
             iActual = aActual.getIdAeropuerto();
             dActual = aleatorio.getfLlegada();
             bet = Double.MAX_VALUE;
