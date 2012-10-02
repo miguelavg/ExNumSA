@@ -29,8 +29,8 @@ public class Recocido {
     private ArrayList<Vuelo> solucion;          // ruta solución
     private ArrayList<Vuelo> alterado;          // ruta alterada
 
-    public Recocido(Parametro parametros) {
-        this.envio = (Envio) Serializer.deserializar(parametros.getXmlEnvio()).get(0);
+    public Recocido(Parametro parametros, int numEnvio) {
+        this.envio = (Envio) Serializer.deserializar(parametros.getXmlEnvio()).get(numEnvio);
         this.temperaturaInicial = parametros.getTemperaturaInicial();
         this.temperatura = this.temperaturaInicial;
         this.temperaturaFinal = parametros.getTemperaturaFinal();
@@ -44,6 +44,7 @@ public class Recocido {
 
         for (int i = 0; i < this.aeropuertos.size(); i++) {
             Aeropuerto aeropuerto = this.aeropuertos.get(i);
+            aeropuerto.inicializar();
 
             if (aeropuerto.getIdAeropuerto() == envio.getIdOrigen()) {
                 envio.setOrigen(aeropuerto);
@@ -193,7 +194,7 @@ public class Recocido {
     private ArrayList<Vuelo> alteracionMolecular() {
         Random rnd = new Random();
         Date fecha;
-        
+
         this.alterado = new ArrayList<Vuelo>();
         int iAleatorio = rnd.nextInt(this.solucion.size());
         Vuelo aleatorio = this.solucion.get(iAleatorio);
@@ -229,7 +230,7 @@ public class Recocido {
         double dEnergia;
         double b, p;
 
-        int iteraciones = (int) (Math.log(this.temperaturaFinal / this.temperaturaInicial) / Math.log(this.alfaSA));
+        int iteraciones = this.kSA * (int) (Math.log(this.temperaturaFinal / this.temperaturaInicial) / Math.log(this.alfaSA));
         int outIt = 0;
 
         tiempoInicio = new Date().getTime();
@@ -258,6 +259,12 @@ public class Recocido {
 
                 if (this.alterado == null) {
                     outIt++;
+
+                    if (outIt >= iteraciones * this.pParada) {
+                        tiempoFin = new Date().getTime();
+                        return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+                    }
+
                     continue;
                 }
 
@@ -279,7 +286,7 @@ public class Recocido {
 
                 if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
-                    return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()));
+                    return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
                 }
 
             }
@@ -288,6 +295,6 @@ public class Recocido {
         }
 
         tiempoFin = new Date().getTime();
-        return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()));
+        return new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
     }
 }

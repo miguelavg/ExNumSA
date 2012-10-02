@@ -74,4 +74,9 @@ public class Aeropuerto {
     public ArrayList<Vuelo> getVuelosSalida() {
         return vuelosSalida;
     }
+    
+    public void inicializar(){
+        vuelosSalida = new ArrayList<Vuelo>();
+        vuelosLlegada = new ArrayList<Vuelo>();
+    }
 }

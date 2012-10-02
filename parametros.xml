@@ -9,6 +9,6 @@
     <kSA>500</kSA>
     <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
     <xmlVuelos>vuelos.xml</xmlVuelos>
-    <xmlEnvio>envio.xml</xmlEnvio>
+    <xmlEnvio>envios.xml</xmlEnvio>
   </beans.Parametro>
 </list>

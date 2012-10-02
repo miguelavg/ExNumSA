@@ -4,7 +4,7 @@
  */
 package exnumsa;
 
-import beans.Parametro;
+import beans.*;
 
 /**
  *
@@ -17,7 +17,10 @@ public class ExNumSA {
      */
     public static void main(String[] args) {
         Parametro parametros = (Parametro) Serializer.deserializar("parametros.xml").get(0);
-        Recocido algSA = new Recocido(parametros);
-        algSA.simular();
+        Recocido algSA = new Recocido(parametros, 0);
+        Resultado resultado = algSA.simular();
+        
+        resultado.imprimirResultados();
+
     }
 }
