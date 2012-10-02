@@ -15,12 +15,12 @@ public class Envio {
     private Aeropuerto destino;
     private int idOrigen;
     private int idDestino;
-    private Date fechaRegistro;
+    private Date fecha;
 
-    public Envio(Aeropuerto origen, Aeropuerto destino, Date fechaRegistro) {
+    public Envio(Aeropuerto origen, Aeropuerto destino, Date fecha) {
         this.origen = origen;
         this.destino = destino;
-        this.fechaRegistro = fechaRegistro;
+        this.fecha = fecha;
     }
 
     public Aeropuerto getOrigen() {
@@ -39,8 +39,8 @@ public class Envio {
         return idDestino;
     }
 
-    public Date getFechaRegistro() {
-        return fechaRegistro;
+    public Date getFecha() {
+        return fecha;
     }
 
     public void setOrigen(Aeropuerto origen) {

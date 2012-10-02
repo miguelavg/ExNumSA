@@ -74,8 +74,7 @@ public class Recocido {
         return this.temperatura;
     }
 
-    private double estadoEnergia(ArrayList<Vuelo> vuelos) {
-        Date llegada = this.envio.getFechaRegistro();
+    private double estadoEnergia(ArrayList<Vuelo> vuelos, Date llegada) {
         Vuelo vuelo;
         long milisec;
         double iCostoAlmacen;
@@ -143,7 +142,7 @@ public class Recocido {
                     posibles.add(vuelo);
                     ArrayList<Vuelo> wrap = new ArrayList<Vuelo>();
                     wrap.add(vuelo);
-                    e = estadoEnergia(wrap);
+                    e = estadoEnergia(wrap, dActual);
 
                     if (e < beta) {
                         beta = e;
@@ -162,7 +161,7 @@ public class Recocido {
                 Vuelo vuelo = posibles.get(i);
                 ArrayList<Vuelo> wrap = new ArrayList<Vuelo>();
                 wrap.add(vuelo);
-                e = estadoEnergia(wrap);
+                e = estadoEnergia(wrap, dActual);
 
                 if (beta <= e && e <= beta + alfa * (tau - beta)) {
                     rcl.add(vuelo);
@@ -193,8 +192,9 @@ public class Recocido {
 
     private ArrayList<Vuelo> alteracionMolecular() {
         Random rnd = new Random();
+        Date fecha;
+        
         this.alterado = new ArrayList<Vuelo>();
-
         int iAleatorio = rnd.nextInt(this.solucion.size());
         Vuelo aleatorio = this.solucion.get(iAleatorio);
         Aeropuerto pivote = aleatorio.getOrigen();
@@ -203,12 +203,10 @@ public class Recocido {
             alterado.add(this.solucion.get(i));
         }
 
-        Date fecha;
-
         if (iAleatorio > 0) {
             fecha = solucion.get(iAleatorio - 1).getfLlegada();
         } else {
-            fecha = envio.getFechaRegistro();
+            fecha = envio.getFecha();
         }
 
         ArrayList<Vuelo> construccion = liteGrasp(pivote, envio.getDestino(), fecha, this.alfaGrasp);
@@ -237,7 +235,7 @@ public class Recocido {
         tiempoInicio = new Date().getTime();
 
         for (int i = 0; i < this.intentos; i++) {
-            this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFechaRegistro(), this.alfaGrasp);
+            this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFecha(), this.alfaGrasp);
             if (this.solucion != null) {
                 break;
             }
@@ -263,7 +261,7 @@ public class Recocido {
                     continue;
                 }
 
-                dEnergia = estadoEnergia(this.alterado) - estadoEnergia(this.solucion);
+                dEnergia = estadoEnergia(this.alterado, this.envio.getFecha()) - estadoEnergia(this.solucion, this.envio.getFecha());
 
                 if (dEnergia > 0) {
 
@@ -281,7 +279,7 @@ public class Recocido {
 
                 if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
-                    return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion));
+                    return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()));
                 }
 
             }
@@ -290,6 +288,6 @@ public class Recocido {
         }
 
         tiempoFin = new Date().getTime();
-        return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion));
+        return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()));
     }
 }
