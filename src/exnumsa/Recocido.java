@@ -15,9 +15,10 @@ import java.util.Random;
  */
 public class Recocido {
 
-    private int beta;                           // iteraciones por temperatura
-    private double tInicial;                    // temperatura inicial 
-    private double tFinal;                      // temperatura final
+    private int kSA;                           // iteraciones por temperatura
+    private double temperaturaInicial;                    // temperatura inicial
+    private double temperatura;
+    private double temperaturaFinal;                      // temperatura final
     private double alfaSA;                      // coeficiente de reducción de temperatura
     private double alfaGrasp;                   // coeficiente de relajación del grasp construcción
     private double parada;                      // porcentaje de malas iteraciones para parar
@@ -30,11 +31,12 @@ public class Recocido {
     public Recocido(String archParametros) {
         Parametro parametro = (Parametro) Serializer.deserializar(archParametros).get(0);
         this.envio = (Envio) Serializer.deserializar(parametro.getXmlEnvio()).get(0);
-        this.tInicial = parametro.gettInicial();
-        this.tFinal = parametro.gettFinal();
+        this.temperaturaInicial = parametro.getTemperaturaInicial();
+        this.temperatura = this.temperaturaInicial;
+        this.temperaturaFinal = parametro.getTemperaturaFinal();
         this.alfaSA = parametro.getAlfaSA();
         this.alfaGrasp = parametro.getAlfaGrasp();
-        this.beta = parametro.getBeta();
+        this.kSA = parametro.getkSA();
         this.parada = parametro.getParada();
 
         this.aeropuertos = Serializer.deserializar(parametro.getXmlAeropuertos());
@@ -65,6 +67,11 @@ public class Recocido {
                 }
             }
         }
+    }
+
+    private double enfriamiento() {
+        this.temperatura = this.alfaSA * this.temperatura;
+        return this.temperatura;
     }
 
     private double estadoEnergia(ArrayList<Vuelo> vuelos) {
@@ -103,7 +110,7 @@ public class Recocido {
         return Math.exp(-1 * (dEnergia / temperatura));
     }
 
-    private ArrayList<Vuelo> liteGrasp(Aeropuerto aOrigen, Aeropuerto aDestino, Date fecha) {
+    private ArrayList<Vuelo> liteGrasp(Aeropuerto aOrigen, Aeropuerto aDestino, Date fecha, double alfa) {
         Aeropuerto aActual = aOrigen;
         Random rnd = new Random();
 
@@ -116,7 +123,7 @@ public class Recocido {
         ArrayList<Vuelo> rcl;
         Vuelo aleatorio;
 
-        double bet = Double.MAX_VALUE;
+        double beta = Double.MAX_VALUE;
         double tau = 0;
         double e;
 
@@ -138,8 +145,8 @@ public class Recocido {
                     wrap.add(vuelo);
                     e = estadoEnergia(wrap);
 
-                    if (e < bet) {
-                        bet = e;
+                    if (e < beta) {
+                        beta = e;
                     }
                     if (e > tau) {
                         tau = e;
@@ -157,7 +164,7 @@ public class Recocido {
                 wrap.add(vuelo);
                 e = estadoEnergia(wrap);
 
-                if (bet <= e && e <= bet + this.alfaGrasp * (tau - bet)) {
+                if (beta <= e && e <= beta + alfa * (tau - beta)) {
                     rcl.add(vuelo);
                 }
             }
@@ -168,7 +175,7 @@ public class Recocido {
             aActual = aleatorio.getDestino();
             iActual = aActual.getIdAeropuerto();
             dActual = aleatorio.getfLlegada();
-            bet = Double.MAX_VALUE;
+            beta = Double.MAX_VALUE;
             tau = 0;
 
         }
@@ -180,37 +187,38 @@ public class Recocido {
         return construccion;
     }
 
-    private ArrayList<Vuelo> alteracionMolecular(ArrayList<Vuelo> vuelos) {
+    private ArrayList<Vuelo> alteracionMolecular() {
         Random rnd = new Random();
-        ArrayList<Vuelo> rAlterado = new ArrayList<Vuelo>();
+        this.alterado = new ArrayList<Vuelo>();
 
-        int iAleatorio = rnd.nextInt(vuelos.size());
-        Vuelo vuelo = vuelos.get(iAleatorio);
-        Aeropuerto aleatorio = vuelo.getOrigen();
+        int iAleatorio = rnd.nextInt(this.solucion.size());
+        Vuelo aleatorio = this.solucion.get(iAleatorio);
+        Aeropuerto pivote = aleatorio.getOrigen();
 
         for (int i = 0; i < iAleatorio; i++) {
-            rAlterado.add(vuelos.get(i));
+            alterado.add(this.solucion.get(i));
         }
 
         Date fecha;
 
         if (iAleatorio > 0) {
-            fecha = vuelos.get(iAleatorio - 1).getfLlegada();
+            fecha = solucion.get(iAleatorio - 1).getfLlegada();
         } else {
             fecha = envio.getFechaRegistro();
         }
 
-        ArrayList<Vuelo> rAlteracion = liteGrasp(aleatorio, envio.getDestino(), fecha);
+        ArrayList<Vuelo> construccion = liteGrasp(pivote, envio.getDestino(), fecha, this.alfaGrasp);
 
-        if (rAlteracion == null) {
+        if (construccion == null) {
+            this.alterado = null;
             return null;
         }
 
-        for (int i = 0; i < rAlteracion.size(); i++) {
-            rAlterado.add(rAlteracion.get(i));
+        for (int i = 0; i < construccion.size(); i++) {
+            this.alterado.add(construccion.get(i));
         }
 
-        return rAlterado;
+        return alterado;
     }
 
     public Resultado simular() {
@@ -219,13 +227,13 @@ public class Recocido {
         double dEnergia;
         double b, p;
 
-        int iteraciones = (int) (Math.log(this.tFinal / this.tInicial) / Math.log(this.alfaSA));
+        int iteraciones = (int) (Math.log(this.temperaturaFinal / this.temperaturaInicial) / Math.log(this.alfaSA));
         int outIt = 0;
 
         tiempoInicio = new Date().getTime();
 
         for (int i = 0; i < 100; i++) {
-            this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFechaRegistro());
+            this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFechaRegistro(), this.alfaGrasp);
             if (this.solucion != null) {
                 break;
             }
@@ -235,11 +243,12 @@ public class Recocido {
             return null;
         }
 
-        for (double temperatura = this.tInicial; temperatura > this.tFinal; temperatura = this.alfaSA * temperatura) {
-            for (int k = 0; k < this.beta; k++) {
+        while (this.temperatura > this.temperaturaFinal) {
+
+            for (int k = 0; k < this.kSA; k++) {
 
                 for (int i = 0; i < 100; i++) {
-                    this.alterado = alteracionMolecular(this.solucion);
+                    this.alteracionMolecular();
                     if (this.alterado != null) {
                         break;
                     }
@@ -272,6 +281,8 @@ public class Recocido {
                 }
 
             }
+
+            this.enfriamiento();
         }
 
         tiempoFin = new Date().getTime();

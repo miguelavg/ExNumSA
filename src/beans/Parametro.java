@@ -9,34 +9,34 @@ package beans;
  * @author miguelavg
  */
 public class Parametro {
-    private double tInicial;
-    private double tFinal;
+    private double temperaturaInicial;
+    private double temperaturaFinal;
     private double alfaSA;
     private double alfaGrasp;
     private double parada;
-    private int beta;
+    private int kSA;
     private String xmlAeropuertos;
     private String xmlVuelos;
     private String xmlEnvio;
 
-    public Parametro(double tInicial, double tFinal, double alfaSA, double alfaGrasp, double parada, int beta, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
-        this.tInicial = tInicial;
-        this.tFinal = tFinal;
+    public Parametro(double temperaturaInicial, double temperaturaFinal, double alfaSA, double alfaGrasp, double parada, int kSA, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
+        this.temperaturaInicial = temperaturaInicial;
+        this.temperaturaFinal = temperaturaFinal;
         this.alfaSA = alfaSA;
         this.alfaGrasp = alfaGrasp;
         this.parada = parada;
-        this.beta = beta;
+        this.kSA = kSA;
         this.xmlAeropuertos = xmlAeropuertos;
         this.xmlVuelos = xmlVuelos;
         this.xmlEnvio = xmlEnvio;
     }
 
-    public double gettInicial() {
-        return tInicial;
+    public double getTemperaturaInicial() {
+        return temperaturaInicial;
     }
 
-    public double gettFinal() {
-        return tFinal;
+    public double getTemperaturaFinal() {
+        return temperaturaFinal;
     }
 
     public double getAlfaSA() {
@@ -51,8 +51,8 @@ public class Parametro {
         return parada;
     }
 
-    public int getBeta() {
-        return beta;
+    public int getkSA() {
+        return kSA;
     }
 
     public String getXmlAeropuertos() {
@@ -66,4 +66,6 @@ public class Parametro {
     public String getXmlEnvio() {
         return xmlEnvio;
     }
+
+    
 }
