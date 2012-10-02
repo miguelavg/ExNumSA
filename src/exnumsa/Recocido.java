@@ -103,14 +103,13 @@ public class Recocido {
         return Math.exp(-1 * (dEnergia / temperatura));
     }
 
-    private ArrayList<Vuelo> liteGrasp(ArrayList<Vuelo> vuelos, Aeropuerto origen, Aeropuerto destino) {
-        Aeropuerto aActual = origen;
-        Aeropuerto aDestino = destino;
+    private ArrayList<Vuelo> liteGrasp(Aeropuerto aOrigen, Aeropuerto aDestino, Date fecha) {
+        Aeropuerto aActual = aOrigen;
         Random rnd = new Random();
 
-        Date dActual = envio.getFechaRegistro();
-        int iActual = envio.getOrigen().getIdAeropuerto();
-        int iFinal = envio.getDestino().getIdAeropuerto();
+        Date dActual = fecha;
+        int iActual = aActual.getIdAeropuerto();
+        int iFinal = aDestino.getIdAeropuerto();
 
         ArrayList<Vuelo> posibles;
         ArrayList<Vuelo> construccion = new ArrayList<Vuelo>();
@@ -182,7 +181,36 @@ public class Recocido {
     }
 
     private ArrayList<Vuelo> alteracionMolecular(ArrayList<Vuelo> vuelos) {
-        return null;
+        Random rnd = new Random();
+        ArrayList<Vuelo> rAlterado = new ArrayList<Vuelo>();
+
+        int iAleatorio = rnd.nextInt(vuelos.size());
+        Vuelo vuelo = vuelos.get(iAleatorio);
+        Aeropuerto aleatorio = vuelo.getOrigen();
+
+        for (int i = 0; i < iAleatorio; i++) {
+            rAlterado.add(vuelos.get(i));
+        }
+
+        Date fecha;
+
+        if (iAleatorio > 0) {
+            fecha = vuelos.get(iAleatorio - 1).getfLlegada();
+        } else {
+            fecha = envio.getFechaRegistro();
+        }
+
+        ArrayList<Vuelo> rAlteracion = liteGrasp(aleatorio, envio.getDestino(), fecha);
+
+        if (rAlteracion == null) {
+            return null;
+        }
+
+        for (int i = 0; i < rAlteracion.size(); i++) {
+            rAlterado.add(rAlteracion.get(i));
+        }
+
+        return rAlterado;
     }
 
     public Resultado simular() {
@@ -197,7 +225,7 @@ public class Recocido {
         tiempoInicio = new Date().getTime();
 
         for (int i = 0; i < 100; i++) {
-            this.solucion = liteGrasp(this.vuelos, envio.getOrigen(), envio.getDestino());
+            this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFechaRegistro());
             if (this.solucion != null) {
                 break;
             }
