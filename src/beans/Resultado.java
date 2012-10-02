@@ -60,8 +60,8 @@ public class Resultado {
             System.out.println();
         }
         
-        System.out.println("Costo: " + this.costo);
-        System.out.println("Tiempo de respuesta: " + this.tiempo);
+        System.out.println("Costo: " + this.costo + "u");
+        System.out.println("Tiempo de respuesta: " + (double) this.tiempo / 1000 + "ms");
         
     }
 }
