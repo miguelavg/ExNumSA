@@ -4,10 +4,6 @@
  */
 package exnumsa;
 
-import beans.*;
-import java.util.ArrayList;
-import java.util.Date;
-
 /**
  *
  * @author miguelavg

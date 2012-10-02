@@ -4,6 +4,7 @@
     <tFinal>0.0</tFinal>
     <alfaSA>0.99</alfaSA>
     <alfaGrasp>0.40</alfaGrasp>
+    <parada>0.4</parada>
     <beta>500</beta>
     <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
     <xmlVuelos>vuelos.xml</xmlVuelos>
