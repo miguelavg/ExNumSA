@@ -15,22 +15,21 @@ import java.util.Random;
  */
 public class Recocido {
 
-    private int beta;
-    private double tInicial;
-    private double tFinal;
-    private double alfaSA;
-    private double alfaGrasp;
-    private double parada;
-    private Envio envio;
-    private ArrayList<Aeropuerto> aeropuertos;
-    private ArrayList<Vuelo> vuelos;
-    private ArrayList<Vuelo> solucion;
-    private ArrayList<Vuelo> alterado;
+    private int beta;                           // iteraciones por temperatura
+    private double tInicial;                    // temperatura inicial 
+    private double tFinal;                      // temperatura final
+    private double alfaSA;                      // coeficiente de reducción de temperatura
+    private double alfaGrasp;                   // coeficiente de relajación del grasp construcción
+    private double parada;                      // porcentaje de malas iteraciones para parar
+    private Envio envio;                        // envío a realizar
+    private ArrayList<Aeropuerto> aeropuertos;  // todos los aeropuertos
+    private ArrayList<Vuelo> vuelos;            // todos los vuelos
+    private ArrayList<Vuelo> solucion;          // ruta solución
+    private ArrayList<Vuelo> alterado;          // ruta alterada
 
     public Recocido(String archParametros) {
         Parametro parametro = (Parametro) Serializer.deserializar(archParametros).get(0);
         this.envio = (Envio) Serializer.deserializar(parametro.getXmlEnvio()).get(0);
-
         this.tInicial = parametro.gettInicial();
         this.tFinal = parametro.gettFinal();
         this.alfaSA = parametro.getAlfaSA();
@@ -107,13 +106,16 @@ public class Recocido {
     private ArrayList<Vuelo> liteGrasp(ArrayList<Vuelo> vuelos, Aeropuerto origen, Aeropuerto destino) {
         Aeropuerto aActual = origen;
         Aeropuerto aDestino = destino;
+        Random rnd = new Random();
 
         Date dActual = envio.getFechaRegistro();
         int iActual = envio.getOrigen().getIdAeropuerto();
         int iFinal = envio.getDestino().getIdAeropuerto();
 
         ArrayList<Vuelo> posibles;
+        ArrayList<Vuelo> construccion = new ArrayList<Vuelo>();
         ArrayList<Vuelo> rcl;
+        Vuelo aleatorio;
 
         double bet = Double.MAX_VALUE;
         double tau = 0;
@@ -124,10 +126,10 @@ public class Recocido {
         while (iActual != iFinal && aActual.getCapacMax() > aActual.getCapacActual()) {
             posibles = new ArrayList<Vuelo>();
 
+            // Calcular los vuelos posibles, el beta y el tau
+
             for (int i = 0; i < aActual.getVuelosSalida().size(); i++) {
                 Vuelo vuelo = aActual.getVuelosSalida().get(i);
-
-                // si se es posible, calcular energía
 
                 if (vuelo.getfSalida().after(dActual)
                         && vuelo.getCapacEnvioMax() > vuelo.getCapacEnviUsada()
@@ -161,10 +163,22 @@ public class Recocido {
                 }
             }
 
+            aleatorio = rcl.get(rnd.nextInt(rcl.size()));
+            construccion.add(aleatorio);
+
+            aActual = aleatorio.getOrigen();
+            iActual = aActual.getIdAeropuerto();
+            dActual = aleatorio.getfLlegada();
+            bet = Double.MAX_VALUE;
+            tau = 0;
 
         }
 
-        return null;
+        if (iActual != iFinal) {
+            return null;
+        }
+
+        return construccion;
     }
 
     private ArrayList<Vuelo> alteracionMolecular(ArrayList<Vuelo> vuelos) {
@@ -172,27 +186,47 @@ public class Recocido {
     }
 
     public Resultado simular() {
-
-        this.solucion = liteGrasp(this.vuelos, envio.getOrigen(), envio.getDestino());
         Random rnd = new Random();
-
-        long tInicio, tFin;
+        long tiempoInicio, tiempoFin;
         double dEnergia;
         double b, p;
+
         int iteraciones = (int) (Math.log(this.tFinal / this.tInicial) / Math.log(this.alfaSA));
         int outIt = 0;
 
-        tInicio = new Date().getTime();
+        tiempoInicio = new Date().getTime();
+
+        for (int i = 0; i < 100; i++) {
+            this.solucion = liteGrasp(this.vuelos, envio.getOrigen(), envio.getDestino());
+            if (this.solucion != null) {
+                break;
+            }
+        }
+
+        if (this.solucion == null) {
+            return null;
+        }
 
         for (double temperatura = this.tInicial; temperatura > this.tFinal; temperatura = this.alfaSA * temperatura) {
             for (int k = 0; k < this.beta; k++) {
 
-                this.alterado = alteracionMolecular(this.solucion);
+                for (int i = 0; i < 100; i++) {
+                    this.alterado = alteracionMolecular(this.solucion);
+                    if (this.alterado != null) {
+                        break;
+                    }
+                }
+
+                if (this.alterado == null) {
+                    outIt++;
+                    continue;
+                }
+
                 dEnergia = estadoEnergia(this.alterado) - estadoEnergia(this.solucion);
 
                 if (dEnergia > 0) {
 
-                    outIt = outIt + 1;
+                    outIt++;
                     b = boltzmann(dEnergia, temperatura);
                     p = rnd.nextDouble();
 
@@ -205,14 +239,14 @@ public class Recocido {
                 }
 
                 if (outIt >= iteraciones * this.parada) {
-                    tFin = new Date().getTime();
-                    return new Resultado(tFin - tInicio, estadoEnergia(this.solucion));
+                    tiempoFin = new Date().getTime();
+                    return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion));
                 }
 
             }
         }
 
-        tFin = new Date().getTime();
-        return new Resultado(tFin - tInicio, estadoEnergia(this.solucion));
+        tiempoFin = new Date().getTime();
+        return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion));
     }
 }
