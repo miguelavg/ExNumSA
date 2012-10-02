@@ -13,18 +13,20 @@ public class Parametro {
     private double temperaturaFinal;
     private double alfaSA;
     private double alfaGrasp;
-    private double parada;
+    private double pParada;
+    private int intentos;
     private int kSA;
     private String xmlAeropuertos;
     private String xmlVuelos;
     private String xmlEnvio;
 
-    public Parametro(double temperaturaInicial, double temperaturaFinal, double alfaSA, double alfaGrasp, double parada, int kSA, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
+    public Parametro(double temperaturaInicial, double temperaturaFinal, double alfaSA, double alfaGrasp, double pParada, int intentos, int kSA, String xmlAeropuertos, String xmlVuelos, String xmlEnvio) {
         this.temperaturaInicial = temperaturaInicial;
         this.temperaturaFinal = temperaturaFinal;
         this.alfaSA = alfaSA;
         this.alfaGrasp = alfaGrasp;
-        this.parada = parada;
+        this.pParada = pParada;
+        this.intentos = intentos;
         this.kSA = kSA;
         this.xmlAeropuertos = xmlAeropuertos;
         this.xmlVuelos = xmlVuelos;
@@ -47,8 +49,12 @@ public class Parametro {
         return alfaGrasp;
     }
 
-    public double getParada() {
-        return parada;
+    public double getpParada() {
+        return pParada;
+    }
+
+    public int getIntentos() {
+        return intentos;
     }
 
     public int getkSA() {
@@ -65,7 +71,5 @@ public class Parametro {
 
     public String getXmlEnvio() {
         return xmlEnvio;
-    }
-
-    
+    }        
 }

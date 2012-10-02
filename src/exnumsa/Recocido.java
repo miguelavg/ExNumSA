@@ -15,32 +15,32 @@ import java.util.Random;
  */
 public class Recocido {
 
-    private int kSA;                           // iteraciones por temperatura
-    private double temperaturaInicial;                    // temperatura inicial
-    private double temperatura;
-    private double temperaturaFinal;                      // temperatura final
+    private int kSA;                            // iteraciones por temperatura
+    private double temperaturaInicial;          // temperatura inicial
+    private double temperatura;                 // temperatura actual
+    private double temperaturaFinal;            // temperatura final
     private double alfaSA;                      // coeficiente de reducción de temperatura
     private double alfaGrasp;                   // coeficiente de relajación del grasp construcción
-    private double parada;                      // porcentaje de malas iteraciones para parar
+    private double pParada;                     // porcentaje de malas iteraciones para parar
+    private int intentos;                       // intentos de malos grasp
     private Envio envio;                        // envío a realizar
     private ArrayList<Aeropuerto> aeropuertos;  // todos los aeropuertos
     private ArrayList<Vuelo> vuelos;            // todos los vuelos
     private ArrayList<Vuelo> solucion;          // ruta solución
     private ArrayList<Vuelo> alterado;          // ruta alterada
 
-    public Recocido(String archParametros) {
-        Parametro parametro = (Parametro) Serializer.deserializar(archParametros).get(0);
-        this.envio = (Envio) Serializer.deserializar(parametro.getXmlEnvio()).get(0);
-        this.temperaturaInicial = parametro.getTemperaturaInicial();
+    public Recocido(Parametro parametros) {
+        this.envio = (Envio) Serializer.deserializar(parametros.getXmlEnvio()).get(0);
+        this.temperaturaInicial = parametros.getTemperaturaInicial();
         this.temperatura = this.temperaturaInicial;
-        this.temperaturaFinal = parametro.getTemperaturaFinal();
-        this.alfaSA = parametro.getAlfaSA();
-        this.alfaGrasp = parametro.getAlfaGrasp();
-        this.kSA = parametro.getkSA();
-        this.parada = parametro.getParada();
-
-        this.aeropuertos = Serializer.deserializar(parametro.getXmlAeropuertos());
-        this.vuelos = Serializer.deserializar(parametro.getXmlVuelos());
+        this.temperaturaFinal = parametros.getTemperaturaFinal();
+        this.alfaSA = parametros.getAlfaSA();
+        this.alfaGrasp = parametros.getAlfaGrasp();
+        this.kSA = parametros.getkSA();
+        this.pParada = parametros.getpParada();
+        this.intentos = parametros.getIntentos();
+        this.aeropuertos = Serializer.deserializar(parametros.getXmlAeropuertos());
+        this.vuelos = Serializer.deserializar(parametros.getXmlVuelos());
 
         for (int i = 0; i < this.aeropuertos.size(); i++) {
             Aeropuerto aeropuerto = this.aeropuertos.get(i);
@@ -169,6 +169,10 @@ public class Recocido {
                 }
             }
 
+            if (rcl.isEmpty()) {
+                return null;
+            }
+
             aleatorio = rcl.get(rnd.nextInt(rcl.size()));
             construccion.add(aleatorio);
 
@@ -232,7 +236,7 @@ public class Recocido {
 
         tiempoInicio = new Date().getTime();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < this.intentos; i++) {
             this.solucion = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFechaRegistro(), this.alfaGrasp);
             if (this.solucion != null) {
                 break;
@@ -247,7 +251,7 @@ public class Recocido {
 
             for (int k = 0; k < this.kSA; k++) {
 
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < this.intentos; i++) {
                     this.alteracionMolecular();
                     if (this.alterado != null) {
                         break;
@@ -275,7 +279,7 @@ public class Recocido {
                     this.solucion = this.alterado;
                 }
 
-                if (outIt >= iteraciones * this.parada) {
+                if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
                     return new Resultado(tiempoFin - tiempoInicio, estadoEnergia(this.solucion));
                 }

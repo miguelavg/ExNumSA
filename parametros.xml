@@ -1,11 +1,12 @@
 <list>
   <beans.Parametro>
-    <tInicial>100.0</tInicial>
-    <tFinal>0.0</tFinal>
-    <alfaSA>0.99</alfaSA>
+    <temperaturaInicial>20.0</temperaturaInicial>
+    <temperaturaFinal>0.1</temperaturaFinal>
+    <alfaSA>0.9</alfaSA>
     <alfaGrasp>0.40</alfaGrasp>
-    <parada>0.4</parada>
-    <beta>500</beta>
+    <pParada>0.4</pParada>
+    <intentos>100</intentos>
+    <kSA>500</kSA>
     <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
     <xmlVuelos>vuelos.xml</xmlVuelos>
     <xmlEnvio>envio.xml</xmlEnvio>

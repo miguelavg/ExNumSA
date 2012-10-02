@@ -4,6 +4,8 @@
  */
 package exnumsa;
 
+import beans.Parametro;
+
 /**
  *
  * @author miguelavg
@@ -14,7 +16,8 @@ public class ExNumSA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Recocido algSA = new Recocido("parametros.xml");
+        Parametro parametros = (Parametro) Serializer.deserializar("parametros.xml").get(0);
+        Recocido algSA = new Recocido(parametros);
         algSA.simular();
     }
 }
