@@ -61,7 +61,7 @@ public class Resultado {
         }
         
         System.out.println("Costo: " + (int) costo + "u");
-        System.out.println("Tiempo de respuesta: " + (double) this.tiempo / 1000 + "s");
+        System.out.println("Tiempo de respuesta: " + (double) this.tiempo / 1000 + "s\n");
         
     }
 }

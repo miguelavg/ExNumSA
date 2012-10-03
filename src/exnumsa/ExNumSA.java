@@ -16,11 +16,12 @@ public class ExNumSA {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Parametro parametros = (Parametro) Serializer.deserializar("parametros.xml").get(0);
+        Parametro parametros = (Parametro) Serializer.deserializar("xml/parametros.xml").get(0);
         Recocido algSA = new Recocido(parametros, 0);
         Resultado resultado = algSA.simular();
-        
-        resultado.imprimirResultados();
 
+        if (resultado != null) {
+            resultado.imprimirResultados();
+        }
     }
 }

@@ -19,6 +19,7 @@ public class Aeropuerto {
     private int capacMax;
     private int capacActual;
     private boolean principal;
+    private boolean flag; // dummy
     private ArrayList<Vuelo> vuelosSalida;
     private ArrayList<Vuelo> vuelosLlegada;
 

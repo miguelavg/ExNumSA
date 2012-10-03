@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  *
  * @author miguelavg
- */
+     */
 public class Vuelo {
 
     private Aeropuerto origen;
@@ -21,9 +21,11 @@ public class Vuelo {
     private Date fLlegada;
     private double costoAlquiler;
     private int capacEnvioMax;
-    private int capacEnviUsada;
+    private int capacEnvioUsado;
+    private double tiempoAlmacenaje; //dummy
+    private double tVuelo; //dummy
 
-    public Vuelo(int idVuelo, int idOrigen, int idDestino, Date fSalida, Date fLlegada, double costoAlquiler, int capacEnvioMax, int capacEnviUsada) {
+    public Vuelo(int idVuelo, int idOrigen, int idDestino, Date fSalida, Date fLlegada, double costoAlquiler, int capacEnvioMax, int capacEnvioUsado) {
         this.idVuelo = idVuelo;
         this.idOrigen = idOrigen;
         this.idDestino = idDestino;
@@ -31,7 +33,7 @@ public class Vuelo {
         this.fLlegada = fLlegada;
         this.costoAlquiler = costoAlquiler;
         this.capacEnvioMax = capacEnvioMax;
-        this.capacEnviUsada = capacEnviUsada;
+        this.capacEnvioUsado = capacEnvioUsado;
     }
 
     public Aeropuerto getOrigen() {
@@ -66,8 +68,8 @@ public class Vuelo {
         return capacEnvioMax;
     }
 
-    public int getCapacEnviUsada() {
-        return capacEnviUsada;
+    public int getCapacEnviUsado() {
+        return capacEnvioUsado;
     }
 
     public double getCostoAlquiler() {

@@ -7,8 +7,8 @@
     <pParada>0.4</pParada>
     <intentos>100</intentos>
     <kSA>500</kSA>
-    <xmlAeropuertos>aeropuertos.xml</xmlAeropuertos>
-    <xmlVuelos>vuelos.xml</xmlVuelos>
-    <xmlEnvio>envios.xml</xmlEnvio>
+    <xmlAeropuertos>xml/aeropuertos.xml</xmlAeropuertos>
+    <xmlVuelos>xml/vuelos.xml</xmlVuelos>
+    <xmlEnvio>xml/envios.xml</xmlEnvio>
   </beans.Parametro>
 </list>

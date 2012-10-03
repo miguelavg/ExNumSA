@@ -5,9 +5,12 @@
 package exnumsa;
 
 import com.thoughtworks.xstream.XStream;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +40,7 @@ public class Serializer {
 
         try {
             XStream xstream = new XStream();
-            FileReader fr = new FileReader(nombreArch);
+            FileReader fr = new FileReader(nombreArch);           
             lista = (ArrayList) xstream.fromXML(fr);
             fr.close();
         } catch (IOException e) {

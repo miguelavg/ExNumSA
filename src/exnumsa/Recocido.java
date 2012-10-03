@@ -96,7 +96,7 @@ public class Recocido {
             costoAlmacen = costoAlmacen + iCostoAlmacen;
 
             pLleno = rnd.nextDouble() * 0.2 + 0.8;
-            pCapacidad = Math.max(pLleno * vuelo.getCapacEnvioMax(), vuelo.getCapacEnviUsada());
+            pCapacidad = Math.max(pLleno * vuelo.getCapacEnvioMax(), vuelo.getCapacEnviUsado());
 
             iCostoEnvio = (double) vuelo.getCostoAlquiler() / pCapacidad;
             costoEnvio = costoEnvio + iCostoEnvio;
@@ -138,8 +138,8 @@ public class Recocido {
                 Vuelo vuelo = aActual.getVuelosSalida().get(i);
 
                 if (vuelo.getfSalida().after(dActual)
-                        && vuelo.getCapacEnvioMax() > vuelo.getCapacEnviUsada()
-                        && aDestino.getCapacMax() > aDestino.getCapacActual() + vuelo.getCapacEnviUsada()) {
+                        && vuelo.getCapacEnvioMax() > vuelo.getCapacEnviUsado()
+                        && aDestino.getCapacMax() > aDestino.getCapacActual() + vuelo.getCapacEnviUsado()) {
                     posibles.add(vuelo);
                     ArrayList<Vuelo> wrap = new ArrayList<Vuelo>();
                     wrap.add(vuelo);
@@ -244,6 +244,7 @@ public class Recocido {
         }
 
         if (this.solucion == null) {
+            System.out.println("¡No hay solución inicial!");
             return null;
         }
         
@@ -286,12 +287,12 @@ public class Recocido {
 
                     if (p <= b) {
                         this.solucion = this.alterado;
-                        System.out.println("¡Alteración elegida por Boltzmann!");
+                        //System.out.println("¡Alteración elegida por Boltzmann!");
                     }
                 } else {
                     outIt = 0;
                     this.solucion = this.alterado;
-                    System.out.println("¡Alteración elegida por mejora!");
+                    //System.out.println("¡Alteración elegida por mejora!");
                 }
 
                 if (outIt >= iteraciones * this.pParada) {
