@@ -46,11 +46,11 @@ public class Recocido {
             Aeropuerto aeropuerto = this.aeropuertos.get(i);
             aeropuerto.inicializar();
 
-            if (aeropuerto.getIdAeropuerto() == envio.getIdOrigen()) {
+            if (aeropuerto.getIdAeropuerto() == envio.getIdAeropuertoInicial()) {
                 envio.setOrigen(aeropuerto);
             }
 
-            if (aeropuerto.getIdAeropuerto() == envio.getIdDestino()) {
+            if (aeropuerto.getIdAeropuerto() == envio.getIdAeropuertoFin()) {
                 envio.setDestino(aeropuerto);
             }
 
@@ -95,7 +95,7 @@ public class Recocido {
             iCostoAlmacen = vuelo.getOrigen().getCostoAlmacen() * (double) milisec / 60000;
             costoAlmacen = costoAlmacen + iCostoAlmacen;
 
-            pLleno = rnd.nextDouble() * 0.2 + 0.8;
+            pLleno = 0.9; // 0.8 + rnd.nextDouble() * 0.2;
             pCapacidad = Math.max(pLleno * vuelo.getCapacEnvioMax(), vuelo.getCapacEnviUsado());
 
             iCostoEnvio = (double) vuelo.getCostoAlquiler() / pCapacidad;
@@ -269,7 +269,7 @@ public class Recocido {
 
                     if (outIt >= iteraciones * this.pParada) {
                         tiempoFin = new Date().getTime();
-                        System.out.println("¡Fin por optimalidad!");
+                        System.out.println("¡Fin por optimalidad!\n");
                         resultado =  new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
                         return resultado;
                     }
@@ -297,7 +297,7 @@ public class Recocido {
 
                 if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
-                    System.out.println("¡Fin por optimalidad!");
+                    System.out.println("¡Fin por optimalidad!\n");
                     resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
                     return resultado;
                 }
