@@ -23,14 +23,15 @@ public class Recocido {
     private double alfaGrasp;                   // coeficiente de relajación del grasp construcción
     private double pParada;                     // porcentaje de malas iteraciones para parar
     private int intentos;                       // intentos de malos grasp
+    private int iteracionesGrasp;               // iteraciones del grasp
     private Envio envio;                        // envío a realizar
     private ArrayList<Aeropuerto> aeropuertos;  // todos los aeropuertos
     private ArrayList<Vuelo> vuelos;            // todos los vuelos
     private ArrayList<Vuelo> solucion;          // ruta solución
     private ArrayList<Vuelo> alterado;          // ruta alterada
 
-    public Recocido(Parametro parametros, int numEnvio) {
-        this.envio = (Envio) Serializer.deserializar(parametros.getXmlEnvio()).get(numEnvio);
+    public Recocido(Parametro parametros, int numExperimento) {
+        this.envio = (Envio) Serializer.deserializar(parametros.getXmlEnvio() + numExperimento + ".xml").get(0);
         this.temperaturaInicial = parametros.getTemperaturaInicial();
         this.temperatura = this.temperaturaInicial;
         this.temperaturaFinal = parametros.getTemperaturaFinal();
@@ -39,14 +40,15 @@ public class Recocido {
         this.kSA = parametros.getkSA();
         this.pParada = parametros.getpParada();
         this.intentos = parametros.getIntentos();
-        this.aeropuertos = Serializer.deserializar(parametros.getXmlAeropuertos());
-        this.vuelos = Serializer.deserializar(parametros.getXmlVuelos());
+        this.iteracionesGrasp = parametros.getIteracionesGrasp();
+        this.aeropuertos = Serializer.deserializar(parametros.getXmlAeropuertos() + numExperimento + ".xml");
+        this.vuelos = Serializer.deserializar(parametros.getXmlVuelos() + numExperimento + ".xml");
 
         for (int i = 0; i < this.aeropuertos.size(); i++) {
             Aeropuerto aeropuerto = this.aeropuertos.get(i);
             aeropuerto.inicializar();
 
-            if (aeropuerto.getIdAeropuerto() == envio.getIdAeropuertoInicial()) {
+            if (aeropuerto.getIdAeropuerto() == envio.getIdAeropuertoInicio()) {
                 envio.setOrigen(aeropuerto);
             }
 
@@ -244,14 +246,14 @@ public class Recocido {
         }
 
         if (this.solucion == null) {
-            System.out.println("¡No hay solución inicial!");
+            // System.out.println("¡No hay solución inicial!");
             return null;
         }
         
-        System.out.println("Solución inicial: ");
-        tiempoFin = new Date().getTime();
-        resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
-        resultado.imprimirResultados();
+        // System.out.println("Solución inicial: ");
+        // tiempoFin = new Date().getTime();
+        // resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        // resultado.imprimirResultados();
         
         while (this.temperatura > this.temperaturaFinal) {
 
@@ -269,7 +271,7 @@ public class Recocido {
 
                     if (outIt >= iteraciones * this.pParada) {
                         tiempoFin = new Date().getTime();
-                        System.out.println("¡Fin por optimalidad!\n");
+                        // System.out.println("¡Fin por optimalidad!\n");
                         resultado =  new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
                         return resultado;
                     }
@@ -297,7 +299,7 @@ public class Recocido {
 
                 if (outIt >= iteraciones * this.pParada) {
                     tiempoFin = new Date().getTime();
-                    System.out.println("¡Fin por optimalidad!\n");
+                    // System.out.println("¡Fin por optimalidad!\n");
                     resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
                     return resultado;
                 }
@@ -309,6 +311,35 @@ public class Recocido {
 
         tiempoFin = new Date().getTime();
         resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        return resultado;
+    }
+    
+    public Resultado grasp() {
+        Resultado resultado = null;
+        long tiempoInicio, tiempoFin;
+        int energia = Integer.MAX_VALUE;
+        int iEnergia;
+        this.solucion = null;
+        
+        tiempoInicio = new Date().getTime();
+        
+        for (int i = 0; i < this.iteracionesGrasp; i++) {
+            this.alterado = liteGrasp(envio.getOrigen(), envio.getDestino(), envio.getFecha(), this.alfaGrasp);
+            if (this.alterado != null) {
+                iEnergia = estadoEnergia(this.alterado, envio.getFecha());
+                if(iEnergia <= energia){
+                    this.solucion = this.alterado;
+                    energia = iEnergia; 
+                }
+            }
+        }
+        
+        tiempoFin = new Date().getTime();
+        
+        if(this.solucion != null){
+            resultado = new Resultado(this.envio, tiempoFin - tiempoInicio, estadoEnergia(this.solucion, this.envio.getFecha()), this.solucion);
+        }
+        
         return resultado;
     }
 }
