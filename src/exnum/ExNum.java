@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package exnumsa;
+package exnum;
 
 import beans.*;
 
@@ -10,13 +10,13 @@ import beans.*;
  *
  * @author miguelavg
  */
-public class ExNumSA {
+public class ExNum {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Parametro parametros = (Parametro) Serializer.deserializar("xml/parametros.xml").get(0);
+        Parametro parametros = (Parametro) Serializer.deserializar("parametros.xml").get(0);
         int numExperimentos = parametros.getNumExperimentos();
         int numRepeticiones = parametros.getNumRepeticiones();
 
